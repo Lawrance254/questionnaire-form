@@ -109,10 +109,15 @@
     };
 
     fetch("https://script.google.com/macros/s/AKfycbxE_CrqF4ra8Zz7WqjOHtH4OlHFsdT3FnZBnerTNpL6Tc2hvMJr0l-eV63LC1Q1kDtvwQ/exec", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" }
-    })
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    },
+    mode: "cors"
+})
+
     .then(response => response.text())
     .then(data => {
         alert("Thank you! Your response has been recorded.");
