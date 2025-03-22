@@ -97,29 +97,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            
-            let formData = {
-                name: document.getElementById("name").value,
-                email: document.getElementById("email").value,
-                stressLevel: document.getElementById("stressLevel").value,
-                anxiety: document.getElementById("anxiety").value,
-                copingMethods: document.getElementById("copingMethods").value,
-                seekHelp: document.getElementById("seekHelp").value
-            };
+    e.preventDefault();
+    
+    let formData = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        stressLevel: document.getElementById("stressLevel").value,
+        anxiety: document.getElementById("anxiety").value,
+        copingMethods: document.getElementById("copingMethods").value,
+        seekHelp: document.getElementById("seekHelp").value
+    };
 
-            fetch("YOUR_DEPLOYMENT_URL_HERE", {
-                method: "POST",
-                body: JSON.stringify(formData),
-                headers: { "Content-Type": "application/json" }
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert("Thank you for completing the survey!");
-                document.getElementById("mentalHealthForm").reset();
-            })
-            .catch(error => console.error("Error:", error));
-        });
+    fetch("https://script.google.com/macros/s/AKfycbxE_CrqF4ra8Zz7WqjOHtH4OlHFsdT3FnZBnerTNpL6Tc2hvMJr0l-eV63LC1Q1kDtvwQ/exec", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" }
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert("Thank you! Your response has been recorded.");
+        document.getElementById("mentalHealthForm").reset();
+    })
+    .catch(error => console.error("Error:", error));
+});
+
     </script>
 </body>
 </html>
