@@ -91,35 +91,48 @@
     </div>
 
     <script>
-        document.getElementById("mentalHealthForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            let formData = {
-                Name: document.getElementById("name").value,
-                Email: document.getElementById("email").value,
-                "How often do you feel stressed?": document.getElementById("stressLevel").value,
-                "Do you experience anxiety or panic attacks?": document.getElementById("anxiety").value,
-                "How do you usually cope with stress?": document.getElementById("copingMethods").value,
-                "Would you be open to seeking professional help?": document.getElementById("seekHelp").value
-            };
+    document.getElementById("mentalHealthForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
 
-            fetch("https://script.google.com/macros/s/AKfycbxE_CrqF4ra8Zz7WqjOHtH4OlHFsdT3FnZBnerTNpL6Tc2hvMJr0l-eV63LC1Q1kDtvwQ/exec", {
+        let formData = {
+            Name: document.getElementById("name").value.trim(),
+            Email: document.getElementById("email").value.trim(),
+            "How often do you feel stressed?": document.getElementById("stressLevel").value,
+            "Do you experience anxiety or panic attacks?": document.getElementById("anxiety").value,
+            "How do you usually cope with stress?": document.getElementById("copingMethods").value,
+            "Would you be open to seeking professional help?": document.getElementById("seekHelp").value
+        };
+
+        // Validate required fields
+        if (!formData.Name || !formData.Email) {
+            alert("Please enter your Name and Email.");
+            return;
+        }
+
+        try {
+            let response = await fetch("https://script.google.com/macros/s/AKfycbxE_CrqF4ra8Zz7WqjOHtH4OlHFsdT3FnZBnerTNpL6Tc2hvMJr0l-eV63LC1Q1kDtvwQ/exec", {
                 method: "POST",
-                body: JSON.stringify(formData),
-                headers: { 
-                    "Content-Type": "application/json"
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message || "Thank you! Your response has been recorded.");
-                document.getElementById("mentalHealthForm").reset();
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Submission failed. Please try again.");
+                mode: "cors",  // Enable cross-origin requests
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
             });
-        });
-    </script>
+
+            if (!response.ok) throw new Error(`Server responded with ${response.status}`);
+
+            let data = await response.json();
+
+            if (data.message === "Success") {
+                alert("Thank you! Your response has been recorded.");
+                document.getElementById("mentalHealthForm").reset();
+            } else {
+                throw new Error(data.message || "Unknown error");
+            }
+        } catch (error) {
+            console.error("Submission Error:", error);
+            alert("Submission failed. Please try again.");
+        }
+    });
+</script>
+
 </body>
 </html>
