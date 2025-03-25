@@ -103,33 +103,30 @@
             "Would you be open to seeking professional help?": document.getElementById("seekHelp").value
         };
 
-        // Validate required fields
         if (!formData.Name || !formData.Email) {
-            alert("Please enter your Name and Email.");
+            alert("Please fill in your Name and Email.");
             return;
         }
 
         try {
             let response = await fetch("https://script.google.com/macros/s/AKfycbxE_CrqF4ra8Zz7WqjOHtH4OlHFsdT3FnZBnerTNpL6Tc2hvMJr0l-eV63LC1Q1kDtvwQ/exec", {
                 method: "POST",
-                mode: "cors",  // Enable cross-origin requests
+                mode: "cors",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) throw new Error(`Server responded with ${response.status}`);
+            let result = await response.json();
 
-            let data = await response.json();
-
-            if (data.message === "Success") {
-                alert("Thank you! Your response has been recorded.");
+            if (result.status === "success") {
+                alert(result.message);
                 document.getElementById("mentalHealthForm").reset();
             } else {
-                throw new Error(data.message || "Unknown error");
+                throw new Error(result.message || "Unknown error");
             }
         } catch (error) {
             console.error("Submission Error:", error);
-            alert("Submission failed. Please try again.");
+            alert("Submission failed. Please check your internet connection and try again.");
         }
     });
 </script>
