@@ -20,20 +20,9 @@
       border-radius: 10px;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
-
-    .form-group {
-      display: flex;
-      align-items: center;
-    }
-
-    .form-group img {
-      margin-right: 10px;
-    }
-
     .btn-primary {
       width: 100%;
     }
-
     #msg {
       text-align: center;
       margin-top: 10px;
@@ -46,26 +35,21 @@
 
   <div class="container">
     <h4 class="text-center mb-3">Contact Us</h4>
-    <form name="submit-to-google-sheet">
-      <div class="mb-3 form-group">
-        <img src="t8.png" width="19px">
-        <input type="text" name="name" id="name" class="form-control" placeholder="Your name" required>
+    <form id="contactForm">
+      <div class="mb-3">
+        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
       </div>
-      <div class="mb-3 form-group">
-        <img src="t7.png" width="15px">
-        <input type="text" name="phone" id="phone" class="form-control" placeholder="Your phone number" required>
+      <div class="mb-3">
+        <input type="text" name="phone" class="form-control" placeholder="Your Phone Number" required>
       </div>
-      <div class="mb-3 form-group">
-        <img src="t9.png" width="15px">
-        <input type="email" name="email" id="email" class="form-control" placeholder="Your email" required>
+      <div class="mb-3">
+        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
       </div>
-      <div class="mb-3 form-group">
-        <img src="t10.png" width="15px">
-        <input type="text" name="text" id="message" class="form-control" placeholder="Your message" required>
+      <div class="mb-3">
+        <input type="text" name="message" class="form-control" placeholder="Your Message" required>
       </div>
-      <div class="mb-3 form-group">
-        <img src="t11.png" width="15px">
-        <input type="date" name="date" id="date" class="form-control" required>
+      <div class="mb-3">
+        <input type="date" name="date" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -74,18 +58,29 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbx0fKFZat1CERts62BPLsIRZJDXyMV0dqPDxQJeTYdlyz9SUluHWGJQ7KDH9M5D9hjC/exec';
-    const form = document.forms['submit-to-google-sheet'];
+    const form = document.getElementById('contactForm');
     const msg = document.getElementById('msg');
 
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-        .then(response => {
-          msg.innerHTML = "Message sent successfully. We will email you";
-          setTimeout(() => { msg.innerHTML = ""; }, 5000);
+      msg.innerHTML = "Sending...";
+      
+      try {
+        let response = await fetch(scriptURL, { method: 'POST', body: new FormData(form) });
+        let result = await response.json();
+
+        if (result.result === "success") {
+          msg.innerHTML = "Message sent successfully!";
           form.reset();
-        })
-        .catch(error => console.error('Error!', error.message));
+        } else {
+          msg.innerHTML = "Error sending message.";
+        }
+      } catch (error) {
+        msg.innerHTML = "Something went wrong!";
+        console.error(error);
+      }
+
+      setTimeout(() => { msg.innerHTML = ""; }, 5000);
     });
   </script>
 
