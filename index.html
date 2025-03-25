@@ -49,45 +49,28 @@
         </div>
     </div>
 
-    <script>
-    document.getElementById("mentalHealthForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbx0fKFZat1CERts62BPLsIRZJDXyMV0dqPDxQJeTYdlyz9SUluHWGJQ7KDH9M5D9hjC/exec'
+  const form = document.forms['submit-to-google-sheet']
+  const msg = document.getElementById('msg')
 
-        let formData = {
-            Name: document.getElementById("name").value.trim(),
-            Email: document.getElementById("email").value.trim(),
-            "How often do you feel stressed?": document.getElementById("stressLevel").value,
-            "Do you experience anxiety or panic attacks?": document.getElementById("anxiety").value,
-            "How do you usually cope with stress?": document.getElementById("copingMethods").value,
-            "Would you be open to seeking professional help?": document.getElementById("seekHelp").value
-        };
-
-        if (!formData.Name || !formData.Email) {
-            alert("Please fill in your Name and Email.");
-            return;
-        }
-
-        try {
-            let response = await fetch("https://script.google.com/macros/s/AKfycbxE_CrqF4ra8Zz7WqjOHtH4OlHFsdT3FnZBnerTNpL6Tc2hvMJr0l-eV63LC1Q1kDtvwQ/exec", {
-                method: "POST",
-                mode: "cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            });
-
-            let result = await response.json();
-
-            if (result.status === "success") {
-                alert(result.message);
-                document.getElementById("mentalHealthForm").reset();
-            } else {
-                throw new Error(result.message || "Unknown error");
-            }
-        } catch (error) {
-            console.error("Submission Error:", error);
-            alert("Submission failed. Please check your internet connection and try again.");
-        }
-    });
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+        msg.innerHTML ="Message sent successfully. We will email you"
+        setTimeout(function(){
+          msg.innerHTML = ""
+        },5000)
+        form.reset()
+      })
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
+<script type="text/javascript">
+    <Route exact path="index.php" 
+  render={props => 
+  isAuthenticated()?(<DashboardContainer {...props} />):(<Redirect to="login.php" />) }/>
 </script>
 
 </body>
