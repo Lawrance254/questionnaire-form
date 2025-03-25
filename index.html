@@ -1,78 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health Questionnaire</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        .btn-custom {
-            background-color: #6e8efb;
-            color: white;
-        }
-        .btn-custom:hover {
-            background-color: #5b7be5;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .form-group img {
+      margin-right: 10px;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      color: green;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <div class="card p-4">
-                    <div class="card-body">
-                        <h2 class="text-center mb-4">Mental Health Questionnaire</h2>
-                        <form name="submit-to-google-sheet" action="" method="POST">
-                            <img src="t8.png" width="19px">
-                            <input type="text" name="name" id="name" placeholder="Your name" required><br>
-                            <img src="t7.png" width="15px">
-                            <input type="text" name="phone" id="phone" placeholder="Your phone number" required><br>
-                            <img src="t9.png" width="15px">
-                            <input type="email" name="email" id="email" placeholder="Your email" required><br>
-                            <img src="t10.png" width="15px">
-                            <input type="text" name="text" id="message" placeholder="Your message" required><br>
-                            <img src="t11.png" width="15px">
-                            <input type="date" name="date" id="date" required><br>
-                            <input type="submit" name="submit" id="submit" value="Submit">
-                        </form>
-                        <p id="msg" class="text-center mt-3 text-white"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div class="container">
+    <h4 class="text-center mb-3">Contact Us</h4>
+    <form name="submit-to-google-sheet">
+      <div class="mb-3 form-group">
+        <img src="t8.png" width="19px">
+        <input type="text" name="name" id="name" class="form-control" placeholder="Your name" required>
+      </div>
+      <div class="mb-3 form-group">
+        <img src="t7.png" width="15px">
+        <input type="text" name="phone" id="phone" class="form-control" placeholder="Your phone number" required>
+      </div>
+      <div class="mb-3 form-group">
+        <img src="t9.png" width="15px">
+        <input type="email" name="email" id="email" class="form-control" placeholder="Your email" required>
+      </div>
+      <div class="mb-3 form-group">
+        <img src="t10.png" width="15px">
+        <input type="text" name="text" id="message" class="form-control" placeholder="Your message" required>
+      </div>
+      <div class="mb-3 form-group">
+        <img src="t11.png" width="15px">
+        <input type="date" name="date" id="date" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <p id="msg"></p>
+  </div>
 
-<script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbx0fKFZat1CERts62BPLsIRZJDXyMV0dqPDxQJeTYdlyz9SUluHWGJQ7KDH9M5D9hjC/exec';
-  const form = document.forms['submit-to-google-sheet'];
-  const msg = document.getElementById('msg');
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx0fKFZat1CERts62BPLsIRZJDXyMV0dqPDxQJeTYdlyz9SUluHWGJQ7KDH9M5D9hjC/exec';
+    const form = document.forms['submit-to-google-sheet'];
+    const msg = document.getElementById('msg');
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-      .then(response => {
-        msg.innerHTML = "Message sent successfully. We will email you.";
-        setTimeout(() => {
-          msg.innerHTML = "";
-        }, 5000);
-        form.reset();
-      })
-      .catch(error => console.error('Error!', error.message));
-  });
-</script>
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+        .then(response => {
+          msg.innerHTML = "Message sent successfully. We will email you";
+          setTimeout(() => { msg.innerHTML = ""; }, 5000);
+          form.reset();
+        })
+        .catch(error => console.error('Error!', error.message));
+    });
+  </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
