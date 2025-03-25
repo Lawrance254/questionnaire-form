@@ -36,13 +36,19 @@
                     <div class="card-body">
                         <h2 class="text-center mb-4">Mental Health Questionnaire</h2>
                         <form name="submit-to-google-sheet" action="" method="POST">
-              <img src="t8.png" width="19px"><input type="name" name="name" id="name" placeholder="Your name" required> <br><img src="t7.png" width="15px">
-            <input type="text" name="phone" id="phone" placeholder="Your phone number" required><br><img src="t9.png" width="15px">
-              <input type="email" name="email" id="email" placeholder="Your email" required><br><img src="t10.png" width="15px">
-              <input type="text" name="text" id="message" placeholder="Your message" required><br><img src="t11.png" width="15px">
-              <input type="date" name="date" id="date" required>
-              <input type="submit" name="submit" id="submit" value="Submit">
-            </form>
+                            <img src="t8.png" width="19px">
+                            <input type="text" name="name" id="name" placeholder="Your name" required><br>
+                            <img src="t7.png" width="15px">
+                            <input type="text" name="phone" id="phone" placeholder="Your phone number" required><br>
+                            <img src="t9.png" width="15px">
+                            <input type="email" name="email" id="email" placeholder="Your email" required><br>
+                            <img src="t10.png" width="15px">
+                            <input type="text" name="text" id="message" placeholder="Your message" required><br>
+                            <img src="t11.png" width="15px">
+                            <input type="date" name="date" id="date" required><br>
+                            <input type="submit" name="submit" id="submit" value="Submit">
+                        </form>
+                        <p id="msg" class="text-center mt-3 text-white"></p>
                     </div>
                 </div>
             </div>
@@ -50,27 +56,22 @@
     </div>
 
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbx0fKFZat1CERts62BPLsIRZJDXyMV0dqPDxQJeTYdlyz9SUluHWGJQ7KDH9M5D9hjC/exec'
-  const form = document.forms['submit-to-google-sheet']
-  const msg = document.getElementById('msg')
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbx0fKFZat1CERts62BPLsIRZJDXyMV0dqPDxQJeTYdlyz9SUluHWGJQ7KDH9M5D9hjC/exec';
+  const form = document.forms['submit-to-google-sheet'];
+  const msg = document.getElementById('msg');
 
   form.addEventListener('submit', e => {
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+    e.preventDefault();
+    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
       .then(response => {
-        msg.innerHTML ="Message sent successfully. We will email you"
-        setTimeout(function(){
-          msg.innerHTML = ""
-        },5000)
-        form.reset()
+        msg.innerHTML = "Message sent successfully. We will email you.";
+        setTimeout(() => {
+          msg.innerHTML = "";
+        }, 5000);
+        form.reset();
       })
-      .catch(error => console.error('Error!', error.message))
-  })
-</script>
-<script type="text/javascript">
-    <Route exact path="index.php" 
-  render={props => 
-  isAuthenticated()?(<DashboardContainer {...props} />):(<Redirect to="login.php" />) }/>
+      .catch(error => console.error('Error!', error.message));
+  });
 </script>
 
 </body>
